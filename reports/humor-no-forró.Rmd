@@ -1,0 +1,70 @@
+---
+title: "Humores dos forrós"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(viridis)
+library(here)
+theme_set(theme_minimal())
+```
+
+```{r}
+forró = read_csv(here("data/forro_do_gogó_ao_mocotó.csv"))
+tropicalistas = read_csv(here("data/tropicalistas.csv"))
+```
+
+Qual a música mais triste de cada artista em cada ano? 
+
+```{r}
+forró %>% 
+    group_by(artist, album_release_date) %>% 
+    summarise(humor_do_ano = min(valence)) %>% 
+    ggplot(aes(x = album_release_date, 
+               group = artist,
+               color = artist,
+               y = humor_do_ano)) + 
+    geom_line() + 
+    geom_point()
+```
+
+```{r}
+p = forró %>% 
+    arrange(album_release_date) %>% 
+    ggplot(aes(x = energy, 
+               group = artist,
+               color = artist,
+               label = track_name,
+               y = valence)) + 
+    geom_point(size = .8, alpha = .8) 
+
+plotly::ggplotly(p)
+```
+```{r}
+forró %>% 
+    arrange(album_release_date) %>% 
+    ggplot(aes(x = energy, 
+               group = artist,
+               label = track_name,
+               y = valence)) + 
+    stat_density2d(aes(fill=..level..), geom="polygon") +
+    scale_fill_viridis() + 
+    # geom_density2d() + # ou o stat_density ou geom_density
+    facet_wrap(~artist)
+```
+
+```{r}
+tropicalistas %>% 
+    arrange(album_release_date) %>% 
+    ggplot(aes(x = energy, 
+               group = artist,
+               label = track_name,
+               y = valence)) + 
+    stat_density2d(aes(fill=..level..), geom="polygon") +
+    scale_fill_viridis() + 
+    # geom_density2d() + # ou o stat_density ou geom_density
+    facet_wrap(~artist)
+
+```
+

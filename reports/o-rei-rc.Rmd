@@ -1,0 +1,28 @@
+---
+title: "Rei Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(here)
+theme_set(theme_bw())
+```
+
+```{r}
+rei = read_csv(here("data/o_rei.csv"))
+```
+
+```{r}
+p = rei %>% 
+    mutate(faixa = paste(track_name, album_release_date)) %>% 
+    ggplot(aes(x = energy, 
+               group = artist,
+               color = artist,
+               label = faixa,
+               y = valence)) + 
+    geom_point(size = .8, alpha = .8) 
+
+plotly::ggplotly(p)
+```
+
