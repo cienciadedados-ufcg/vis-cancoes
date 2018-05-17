@@ -55,16 +55,25 @@ forró %>%
 ```
 
 ```{r}
+library(silgelib)
+theme_set(theme_roboto())
 tropicalistas %>% 
     arrange(album_release_date) %>% 
     ggplot(aes(x = energy, 
                group = artist,
                label = track_name,
                y = valence)) + 
-    stat_density2d(aes(fill=..level..), geom="polygon") +
+    stat_density2d(aes(fill=..level..), geom="polygon", n = 100, h = .25) +
     scale_fill_viridis() + 
     # geom_density2d() + # ou o stat_density ou geom_density
-    facet_wrap(~artist)
+    facet_wrap(~artist) + 
+    scale_x_continuous(limits = c(-.05, 1.05)) + 
+    scale_y_continuous(limits = c(-.05, 1.05)) + 
+    theme(legend.position = "None") + 
+    labs(title = "Emoção nas gravações tropicalistas segundo o spotify", 
+         subtitle = "A partir da análise de áudio de algumas centenas de faixas de cada um", 
+         x = "Energia (+ = rápida, alta, cheia de sons)", 
+         y = "Valência (+ = animada, alegre, eufórica)")
 
 ```
 
