@@ -1,5 +1,6 @@
 .DS_Store
 code/chaves-spotify.txt
+#code/chaves-do-spotify.csv
 
 # History files
 .Rhistory
