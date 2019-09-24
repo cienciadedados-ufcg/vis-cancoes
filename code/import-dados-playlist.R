@@ -33,7 +33,8 @@ f = features %>%
            -track.album.total_tracks, -track.album.total_tracks, 
            -track.album.type, -track.album.uri, -track.album.external_urls.spotify,
            -video_thumbnail.url, -starts_with("track.external"), -track.album.href,
-           -track.album.album_type)
+           -track.album.album_type) %>% 
+    set_names(~ str_replace_all(., fixed(".", TRUE), "_"))    
 
 f %>% 
     write_csv(here::here("data/playlists-spotify.csv"))
